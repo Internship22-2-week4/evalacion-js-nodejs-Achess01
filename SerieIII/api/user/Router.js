@@ -55,7 +55,7 @@ class UserRouter {
     } else if (result) {
       this._response.success(req, res, result, this._httpCode.CREATED)
     } else {
-      this._response.error(req, res, 'User not created', this._httpCode.CREATED)
+      this._response.error(req, res, 'User not created', this._httpCode.BAD_REQUEST)
     }
   }
 
@@ -64,7 +64,7 @@ class UserRouter {
     if (result) {
       this._response.success(req, res, result, this._httpCode.OK)
     } else {
-      this._response.error(req, res, 'Error', this._httpCode.CREATED)
+      this._response.error(req, res, 'Error', this._httpCode.NOT_FOUND)
     }
   }
 
@@ -74,7 +74,7 @@ class UserRouter {
     if (result) {
       this._response.success(req, res, result, this._httpCode.OK)
     } else {
-      this._response.error(req, res, 'Not found', this._httpCode.CREATED)
+      this._response.error(req, res, 'Not found', this._httpCode.NOT_FOUND)
     }
   }
 
@@ -85,7 +85,7 @@ class UserRouter {
     if (result) {
       this._response.success(req, res, result, this._httpCode.OK)
     } else {
-      this._response.error(req, res, 'Not found', this._httpCode.CREATED)
+      this._response.error(req, res, 'Not found', this._httpCode.NOT_FOUND)
     }
   }
 
@@ -95,7 +95,7 @@ class UserRouter {
     if (result) {
       this._response.success(req, res, result, this._httpCode.OK)
     } else {
-      this._response.error(req, res, 'Not found', this._httpCode.CREATED)
+      this._response.error(req, res, 'Not found', this._httpCode.NOT_FOUND)
     }
   }
 }

@@ -1,4 +1,4 @@
-class PhotoRouter {
+class AlbumRouter {
   constructor({
     router,
     controller,
@@ -6,6 +6,7 @@ class PhotoRouter {
     httpCode,
     validateCreate,
     validateUpdate,
+    validateAddPhoto,
     checkToken
   }) {
     this._router = router()
@@ -15,6 +16,7 @@ class PhotoRouter {
     this._validateCreate = validateCreate
     this._validateUpdate = validateUpdate
     this._checkToken = checkToken
+    this._validateAddPhoto = validateAddPhoto
     this.registerRoutes()
   }
 
@@ -24,45 +26,57 @@ class PhotoRouter {
       '/',
       this._checkToken,
       this._validateCreate,
-      this.handleCreatePhoto.bind(this)
+      this.handleCreateAlbum.bind(this)
+    )
+    this._router.post(
+      '/',
+      this._checkToken,
+      this._validateCreate,
+      this.handleCreateAlbum.bind(this)
     )
     // Request
-    this._router.get('/', this._checkToken, this.handleGetAllPhotos.bind(this))
-    this._router.get('/:id', this._checkToken, this.handleGetPhoto.bind(this))
+    this._router.get('/', this._checkToken, this.handleGetAllAlbums.bind(this))
+    this._router.get('/:id', this._checkToken, this.handleGetAlbum.bind(this))
     // Update
     this._router.put(
       '/:id',
       this._checkToken,
       this._validateUpdate,
-      this.handleUpdatePhoto.bind(this)
+      this.handleUpdateAlbum.bind(this)
+    )
+    // Add photo to a playlist
+    this._router.patch(
+      '/:id',
+      this._checkToken,
+      this._validateAddPhoto,
+      this.handleAddPhoto.bind(this)
     )
     // Delete
     this._router.delete(
       '/:id',
       this._checkToken,
-      this.handleDeletePhoto.bind(this)
+      this.handleDeleteAlbum.bind(this)
     )
   }
 
-  async handleCreatePhoto(req, res) {
+  async handleCreateAlbum(req, res) {
     const idUser = res.locals.user.id
-    const photo = req.body
-    photo.idOwner = idUser
-    photo.addedAt = new Date()
-    const result = await this._controller.create(photo)
+    const album = req.body
+    album.idOwner = idUser
+    const result = await this._controller.create(album)
     if (result) {
       this._response.success(req, res, result, this._httpCode.CREATED)
     } else {
       this._response.error(
         req,
         res,
-        'Photo not created',
+        'Album not created',
         this._httpCode.BAD_REQUEST
       )
     }
   }
 
-  async handleGetAllPhotos(req, res) {
+  async handleGetAllAlbums(req, res) {
     const result = await this._controller.getAll()
     if (result) {
       this._response.success(req, res, result, this._httpCode.OK)
@@ -71,7 +85,7 @@ class PhotoRouter {
     }
   }
 
-  async handleGetPhoto(req, res) {
+  async handleGetAlbum(req, res) {
     const { id } = req.params
     const result = await this._controller.getOne(id)
     if (result) {
@@ -81,7 +95,7 @@ class PhotoRouter {
     }
   }
 
-  async handleUpdatePhoto(req, res) {
+  async handleUpdateAlbum(req, res) {
     const { id } = req.params
     const content = req.body
     const result = await this._controller.update(id, content)
@@ -92,7 +106,24 @@ class PhotoRouter {
     }
   }
 
-  async handleDeletePhoto(req, res) {
+  async handleAddPhoto(req, res) {
+    const { id } = req.params
+    const { idPhoto } = req.body
+    console.log(id, idPhoto)
+    const result = await this._controller.addPhoto(id, idPhoto)
+    if (result) {
+      this._response.success(req, res, 'Added', this._httpCode.OK)
+    } else {
+      this._response.error(
+        req,
+        res,
+        'Not album or photo founded',
+        this._httpCode.NOT_FOUND
+      )
+    }
+  }
+
+  async handleDeleteAlbum(req, res) {
     const { id } = req.params
     const result = await this._controller.delete(id)
     if (result) {
@@ -103,4 +134,4 @@ class PhotoRouter {
   }
 }
 
-export default PhotoRouter
+export default AlbumRouter
