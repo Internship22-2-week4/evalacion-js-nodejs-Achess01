@@ -23,7 +23,21 @@ class AlbumController {
 
   async getOne(id, query) {
     const album = await this._service.getById('albums', id)
-    return album
+    if (!album) return null
+    const photoalbums = await this._service.getAll('photoalbums', {
+      idAlbum: album._id
+    })
+    let resultPhotos = []
+    if (photoalbums.length > 0) {
+      // phA: relation between photo and album
+      const ids = photoalbums.map((phA) => phA.idPhoto)
+      const query = { _id: { $in: ids } }
+      resultPhotos = await this._service.getAll('photos', query)
+      if (!resultPhotos) return null
+      console.log(resultPhotos)
+      console.log(album)
+    }
+    return Object.assign({ photos: resultPhotos }, album._doc)
   }
 
   async update(id, content) {

@@ -14,10 +14,7 @@ export default class AuthController {
         user.email
       )
       if (!founded) return this.wrongCredentials()
-      const result = this._comparePassword(
-        user.password,
-        founded.password
-      )
+      const result = this._comparePassword(user.password, founded.password)
       console.log(result)
       if (result) {
         const token = this._generateToken(founded.id)

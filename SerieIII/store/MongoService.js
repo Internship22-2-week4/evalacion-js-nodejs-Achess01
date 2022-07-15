@@ -36,12 +36,10 @@ export default class MongoService {
 
   // Request
   async getAll(table, extra, limit = -1) {
-    console.log(this._models)
     try {
       if (!this._models[table]) return null
       const model = models[table]
       const searchQuery = extra || {}
-      console.log(extra)
       let res = null
       if (limit > 0) {
         res = await model.find(searchQuery).limit(limit)
@@ -104,45 +102,3 @@ export default class MongoService {
     }
   }
 }
-
-/* const test = new MongoService()
-test
-  .save({
-    _username: 'test1',
-    _email: 'email@test1.com',
-    _password: 'password',
-    _nuevo: 'jiji'
-  })
-  .then((res, err) => {
-    if (err) {
-      console.error(err)
-    } else {
-      console.log(res)
-    }
-  }) */
-
-/* test.all().then((res, err) => {
-  if (err) {
-    console.error(err)
-  } else {
-    console.log(res[0]._id)
-  }
-}) */
-
-/* test.delete('62c706f9d4306aabb58583fd').then((res, err) => {
-  if (err) {
-    console.error(err)
-  } else {
-    console.log(res)
-  }
-}) */
-
-/* test
-  .update('62c70893d8d49d1528cd0398', { _email: 'mail@nuevo.com' })
-  .then((res, err) => {
-    if (err) {
-      console.error(err)
-    } else {
-      console.log(res)
-    }
-  }) */
