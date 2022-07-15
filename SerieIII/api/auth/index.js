@@ -5,6 +5,7 @@ import MongoService from '../../store/MongoService.js'
 import helpers from '../../lib/helpers.js'
 import { response } from '../../response/response.js'
 import { HttpStatusCode } from '../../response/httpCode.js'
+import { validateSignin } from './validate.js'
 
 const authModule = (router) => {
   const authServices = new MongoService()
@@ -18,7 +19,8 @@ const authModule = (router) => {
     router,
     controller: authController,
     response,
-    httpCode: HttpStatusCode
+    httpCode: HttpStatusCode,
+    validateSignin
   })
 
   return authRoute._router

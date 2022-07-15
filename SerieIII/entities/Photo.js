@@ -8,6 +8,10 @@ class Photo {
     this._id = null
   }
 
+  get name() {
+    return this._name
+  }
+
   get idOwner() {
     return this._idOwner
   }

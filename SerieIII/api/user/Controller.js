@@ -24,12 +24,12 @@ class UserController {
   }
 
   async getAll() {
-    const users = await this._service.getDataFromTable('users')
+    const users = await this._service.getAll('users')
     return users
   }
 
   async getOne(id, query) {
-    const user = await this._service.getEntity('users', id)
+    const user = await this._service.getById('users', id)
     return user
   }
 

@@ -1,14 +1,19 @@
 export default class AuthRoute {
-  constructor({ router, controller, response, httpCode }) {
+  constructor({ router, controller, response, httpCode, validateSignin }) {
     this._router = router()
     this._controller = controller
     this._response = response
     this._httpCode = httpCode
+    this._validateSignin = validateSignin
     this.registerRoutes()
   }
 
   registerRoutes() {
-    this._router.post('/signin', this.handleSignIn.bind(this))
+    this._router.post(
+      '/signin',
+      this._validateSignin,
+      this.handleSignIn.bind(this)
+    )
   }
 
   async handleSignIn(req, res) {

@@ -4,6 +4,7 @@ import morgan from 'morgan'
 
 import userModule from './user/index.js'
 import authModule from './auth/index.js'
+import photoModule from './photo/index.js'
 
 class Server {
   constructor({ port, hostname, name }) {
@@ -28,6 +29,7 @@ class Server {
     })
     this._app.use('/api/v1/users', userModule(express.Router))
     this._app.use('/api/v1/auth', authModule(express.Router))
+    this._app.use('/api/v1/photos', photoModule(express.Router))
   }
 
   start() {
