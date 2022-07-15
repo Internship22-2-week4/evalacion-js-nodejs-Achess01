@@ -35,14 +35,19 @@ export default class MongoService {
   }
 
   // Request
-  async getAll(table, extra) {
+  async getAll(table, extra, limit = -1) {
     console.log(this._models)
     try {
       if (!this._models[table]) return null
       const model = models[table]
       const searchQuery = extra || {}
       console.log(extra)
-      const res = await model.find(searchQuery)
+      let res = null
+      if (limit > 0) {
+        res = await model.find(searchQuery).limit(limit)
+      } else {
+        res = await model.find(searchQuery)
+      }
       return res
     } catch (err) {
       // console.error(err)

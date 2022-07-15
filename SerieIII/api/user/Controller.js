@@ -23,6 +23,19 @@ class UserController {
     return response
   }
 
+  async getPhotos(id, recent = false) {
+    let limit = -1
+    if (recent) limit = 5
+    const result = await this._service.getAll('photos', { idOwner: id }, limit)
+    console.log(result)
+    return result
+  }
+
+  async getAlbums(id) {
+    const result = await this._service.getAll('albums', { idOwner: id })
+    return result
+  }
+
   async getAll() {
     const users = await this._service.getAll('users')
     return users

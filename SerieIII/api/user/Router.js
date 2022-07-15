@@ -26,6 +26,16 @@ class UserRouter {
       this.handleCreateUser.bind(this)
     )
     // Request
+    this._router.get(
+      '/collection/photos',
+      this._checkToken,
+      this.handleGetPhotos.bind(this)
+    )
+    this._router.get(
+      '/collection/albums',
+      this._checkToken,
+      this.handleGetAlbums.bind(this)
+    )
     this._router.get('/', this._checkToken, this.handleGetAllUsers.bind(this))
     this._router.get('/:id', this._checkToken, this.handleGetUser.bind(this))
     // Update
@@ -55,7 +65,33 @@ class UserRouter {
     } else if (result) {
       this._response.success(req, res, result, this._httpCode.CREATED)
     } else {
-      this._response.error(req, res, 'User not created', this._httpCode.BAD_REQUEST)
+      this._response.error(
+        req,
+        res,
+        'User not created',
+        this._httpCode.BAD_REQUEST
+      )
+    }
+  }
+
+  async handleGetPhotos(req, res) {
+    const recent = req.query.recent || false
+    const idUser = res.locals.user.id
+    const result = await this._controller.getPhotos(idUser, recent)
+    if (result) {
+      this._response.success(req, res, result, this._httpCode.OK)
+    } else {
+      this._response.error(req, res, 'Error', this._httpCode.BAD_REQUEST)
+    }
+  }
+
+  async handleGetAlbums(req, res) {
+    const idUser = res.locals.user.id
+    const result = await this._controller.getAlbums(idUser)
+    if (result) {
+      this._response.success(req, res, result, this._httpCode.OK)
+    } else {
+      this._response.error(req, res, 'Error', this._httpCode.BAD_REQUEST)
     }
   }
 
