@@ -3,6 +3,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 
 import userModule from './user/index.js'
+import authModule from './auth/index.js'
 
 class Server {
   constructor({ port, hostname, name }) {
@@ -26,6 +27,7 @@ class Server {
       res.send('hello world')
     })
     this._app.use('/api/v1/users', userModule(express.Router))
+    this._app.use('/api/v1/auth', authModule(express.Router))
   }
 
   start() {

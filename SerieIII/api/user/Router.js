@@ -15,7 +15,6 @@ class UserRouter {
     this._validateCreate = validateCreate
     this._validateUpdate = validateUpdate
     this._checkToken = checkToken
-
     this.registerRoutes()
   }
 
@@ -45,7 +44,19 @@ class UserRouter {
   }
 
   async handleCreateUser(req, res) {
-    this._response.success(req, res, 'Creado buena', this._httpCode.CREATED)
+    const result = await this._controller.create(req.body)
+    if (result === 1) {
+      this._response.success(
+        req,
+        res,
+        'This email already exists',
+        this._httpCode.BAD_REQUEST
+      )
+    } else if (result) {
+      this._response.success(req, res, result, this._httpCode.CREATED)
+    } else {
+      this._response.error(req, res, 'User not created', this._httpCode.CREATED)
+    }
   }
 
   async handleGetAllUsers(req, res) {}

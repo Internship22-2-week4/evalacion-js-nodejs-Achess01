@@ -21,6 +21,10 @@ class User {
   get id() {
     return this._id
   }
+
+  encryptPassword(password, hashPassword) {
+    this._password = hashPassword(password)
+  }
 }
 
 export default User
